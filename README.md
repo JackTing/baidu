@@ -1,7 +1,7 @@
 # Baidu
 
  Ruby gem for Baidu <http://www.baidu.com> apis.
-  ** Developing **
+  **Developing**
 
 ## Installation
 
@@ -21,7 +21,7 @@ Or install it yourself as:
 
 ### Config
 
-```
+```ruby
 
 $client = Baidu.configure do |config|
   config.api_key = "you client id"
@@ -32,7 +32,7 @@ end
 
 ### GetLoggedInUser info
 
-```
+```ruby
 
 $client.authorize_url
 
