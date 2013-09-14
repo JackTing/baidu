@@ -3,7 +3,7 @@ require "json"
 
 module Baidu
   class Client
-    attr_accessor :api_key, :api_secret, :config
+    attr_accessor :api_key, :api_secret
     ##
     # OAuth2::AccessToken
     #
@@ -18,10 +18,10 @@ module Baidu
     # OAuth2::Client instance with baido OAuth
     # http://developer.baidu.com/wiki/index.php?title=docs/oauth/application
     def oauth_client
-      @oauth_client ||= OAuth2::Client.new(self.api_key,self.api_secret,
-                                      site: "https://openapi.baidu.com",
-                                      authorize_url: "/oauth/2.0/authorize",
-                                      token_url: "/oauth/2.0/token")
+      @oauth_client ||= OAuth2::Client.new(api_key, api_secret,
+                                          site: "https://openapi.baidu.com",
+                                          authorize_url: "/oauth/2.0/authorize",
+                                          token_url: "/oauth/2.0/token")
 
     end
 
@@ -40,18 +40,18 @@ redirect or open this URL for login in Baidu website
 
   class SessionController
     def oauth
-      redirect_to $kanbox.authorize_url(redirect_uri: callback_session_url)
+      redirect_to $baidu.authorize_url(redirect_uri: callback_session_url)
     end
 
     def callback
       auth_code = params[:code]
-      $kanbox.token!(auth_code)
+      $baidu.token!(auth_code)
     end
   end
 =end
     def authorize_url(opts = {})
       opts[:redirect_uri] ||= DEFAULT_REDIRECT_URI
-      self.oauth_client.auth_code.authorize_url(redirect_uri: opts[:redirect_uri])
+      oauth_client.auth_code.authorize_url(redirect_uri: opts[:redirect_uri])
     end
 
 
@@ -68,7 +68,7 @@ This method will get #access_token (OAuth2::AccessToken) ... and save in Baidu i
 =end
     def token!(authorization_code,opts = {})
       opts[:redirect_uri] ||= DEFAULT_REDIRECT_URI
-      self.access_token = self.oauth_client.auth_code.get_token(authorization_code, redirect_uri: opts[:redirect_uri])
+      self.access_token = oauth_client.auth_code.get_token(authorization_code, redirect_uri: opts[:redirect_uri])
     end
 
 =begin rdoc
@@ -81,7 +81,7 @@ Refresh tokens when token was expired
 * refresh_token - refresh_token in last got #access_token
 =end
     def refresh_token!(refresh_token)
-      old_token = OAuth2::AccessToken.new(self.oauth_client,'', refresh_token: refresh_token)
+      old_token = OAuth2::AccessToken.new(oauth_client,'', refresh_token: refresh_token)
       self.access_token = old_token.refresh!
     end
 
@@ -95,7 +95,7 @@ You can store #access_token.token in you database or local file, when you restar
 * access_token - token in last got #access_token.token
 =end
     def revert_token!(access_token)
-      self.access_token = OAuth2::AccessToken.new(self.oauth_client,access_token)
+      self.access_token = OAuth2::AccessToken.new(oauth_client, access_token)
     end
 
     # Baidu API list:
@@ -105,7 +105,8 @@ You can store #access_token.token in you database or local file, when you restar
     def profile
       # TODO: Bad taste
       profile_url = "#{api_url('/passport/users/getLoggedInUser')}"
-      response = self.access_token.get(profile_url).body
+
+      response = access_token.get(profile_url).body
       json     = JSON.parse(response)
       return nil if json.has_key?("error_code")
       return BaiduUser.new(uname: json['uname'], uid: json['uid'], portrait: json['portrait'])
@@ -113,7 +114,7 @@ You can store #access_token.token in you database or local file, when you restar
 
     private
      def api_url(path)
-      "https://openapi.baidu.com/rest/2.0#{path}?access_token=#{self.access_token.token}"
+      "https://openapi.baidu.com/rest/2.0#{path}?access_token=#{access_token.token}"
      end
 
   end
