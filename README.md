@@ -51,6 +51,16 @@ $client.get_loggedin_user
 
 ```
 
+更多使用例子请查看 `spec`目录
+
+## TODO
+
+# 逐步完善所有API对接
+
+# 重构oauth2，分离出独立的gem实现
+
+# 添加Terminal命令控制
+
 ## Contributing
 
 1. Fork it
