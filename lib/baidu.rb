@@ -1,8 +1,12 @@
-require "baidu/version"
-require "baidu/client"
+require "active_support/core_ext/object/to_param"
+require 'active_support/core_ext/object/blank'
 
-require "baidu/models/baidu_base"
-require "baidu/models/baidu_user"
+require "baidu/version"
+require "baidu/api/pcs"
+
+# %w(client).each do |fname|
+#   require File.expand_path("../baidu/#{fname}", __FILE__)
+# end
 
 module Baidu
   # The URI urn:ietf:wg:oauth:2.0:oob is a special URI used to identify out-of-browser applications, i.e. non-web applications.
