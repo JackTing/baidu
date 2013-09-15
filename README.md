@@ -1,13 +1,15 @@
 # Baidu
 
- Ruby gem for Baidu <http://www.baidu.com> apis.
+ Ruby gem for Baidu <http://developer.baidu.com> apis.
   **Developing**
+
+ Rubygems: https://rubygems.org/gems/api4baidu
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'baidu'
+    gem "api4baidu"
 
 And then execute:
 
@@ -15,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install baidu
+    $ gem install api4baidu
 
 ## Usage
 
