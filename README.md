@@ -40,13 +40,12 @@ $client.authorize_url
 $client.token!("515a268fd483ff4df85d2d458d34b43a")
 
 # 获取当前登录用户的用户uid、用户名和头像。
-$client.profile
+$client.get_loggedin_user
 
  => Result:
-#<Baidu::BaiduUser:0x007fe45a5ee250
- @portrait="ba6f303830373531353231302c0a",
- @uid="1863251187",
- @uname="ruby_baidu_sdk">
+ {"uid"=>"1863251187",
+ "uname"=>"0807515210",
+ "portrait"=>"ba6f303830373531353231302c0a"}
 
 ```
 
