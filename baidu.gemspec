@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'baidu/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "baidu"
+  spec.name          = "api4baidu"
   spec.version       = Baidu::VERSION
   spec.authors       = ["Dylan Deng"]
   spec.email         = ["dylan@beansmile.com"]
-  spec.description   = "ruby gem for baidu apis"
-  spec.summary       = "ruby gem for baidu apis"
+  spec.description   = "ruby gem for baidu apis, get user infos and PCS function"
+  spec.summary       = "ruby gem for baidu apis, "
   spec.homepage      = "https://github.com/lanrion/baidu"
   spec.license       = "MIT"
 
