@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["dylan@beansmile.com"]
   spec.description   = "ruby gem for baidu apis"
   spec.summary       = "ruby gem for baidu apis"
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/lanrion/baidu"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
