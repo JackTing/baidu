@@ -183,13 +183,11 @@ You can store #access_token.token in you database or local file, when you restar
       end
 
       def user_base_url(path, params={})
-        params.merge!({access_token: token})
         "https://openapi.baidu.com/rest/2.0/passport/users/#{path}?#{query_params(params)}"
       end
 
       def query_params(params)
-        params.merge!({access_token: token})
-        params.to_param
+        params.merge({access_token: token}).to_query
       end
 
       def get_response_json(api_url)
@@ -202,5 +200,3 @@ You can store #access_token.token in you database or local file, when you restar
 
   end
 end
-
-
