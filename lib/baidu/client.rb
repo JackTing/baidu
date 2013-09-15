@@ -4,6 +4,9 @@ require "json"
 module Baidu
   class Client
 
+    include Pcs
+    include User
+
     attr_accessor :api_key, :api_secret
     ##
     # OAuth2::AccessToken
@@ -105,48 +108,6 @@ You can store #access_token.token in you database or local file, when you restar
       self.access_token = OAuth2::AccessToken.new(oauth_client, access_token)
     end
 
-    # Baidu API list:
-    # http://developer.baidu.com/wiki/index.php?title=docs/oauth/rest/file_data_apis_list
-
-    # 用户授权类API列表
-
-    ## 用户信息类接口
-
-    # 获取当前登录用户的信息
-    # passport/users/getLoggedInUser
-    def get_loggedin_user
-      profile_url = "#{user_base_url('getLoggedInUser')}"
-      get_response_json(profile_url)
-    end
-
-    # 返回指定用户的用户资料。
-    # https://openapi.baidu.com/rest/2.0/passport/users/getInfo
-    # uid default "", will return current user info
-    # if you want to access other user info, you should have this permission
-    def get_user_info(uid="")
-      user_info_url = "#{user_base_url('getInfo', uid: uid)}"
-      get_response_json(user_info_url)
-    end
-
-    #用户授权相关的权限   介绍
-    # basic  用户基本权限，可以获取用户的基本信息 。
-    # super_msg  往用户的百度首页上发送消息提醒，相关API任何应用都能使用，但要想将消息提醒在百度首页显示，需要第三方在注册应用时额外填写相关信息。
-    # netdisk  获取用户在个人云存储中存放的数据。
-
-    # 平台授权相关的权限  介绍
-    # public   可以访问公共的开放API。
-    # hao123   可以访问Hao123 提供的开放API接口该权限需要申请开通，请将具体的理由和用途发邮件给tuangou@baidu.com。
-    def get_app_permission(uid="", ext_perms)
-      app_permissions_url = "#{user_base_url('hasAppPermissions', {uid: uid, ext_perms: ext_perms})}"
-      get_response_json(app_permissions_url)
-    end
-
-    # refactor
-    def is_app_user(uid="")
-      app_user_url = "#{user_base_url('isAppUser', uid: uid)}"
-      get_response_json(app_user_url)
-    end
-
     # 好友关系类接口。
 
     # 用户授权类接口
@@ -161,43 +122,7 @@ You can store #access_token.token in you database or local file, when you restar
 
     # 高级API列表
 
-    # PCS
-
-    # 获取当前用户空间配额信息。
-    # https://pcs.baidu.com/rest/2.0/pcs/quota
-    # scope: netdisk
-    def pcs_quota
-      quota_url = "#{pcs_base_url('quota', method: 'info')}"
-      get_response_json(quota_url)
-    end
-
-    # 上传单个文件。
-    # 百度PCS服务目前支持最大2G的单个文件上传。
-    # 如需支持超大文件（>2G）的断点续传，请参考下面的“分片文件上传”方法。
-    def upload_single_file(yun_path, source_file_path="", opts={})
-      require 'rest-client'
-      source_file = File.open(source_file_path)
-      response    = RestClient.post(upload_file_url(path: yun_path), file: source_file)
-      JSON.parse(response)
-    end
-
     private
-
-      def pcs_base_url(path, params={})
-        "https://pcs.baidu.com/rest/2.0/pcs/#{path}?#{query_params(params)}"
-      end
-
-      # overwrite：表示覆盖同名文件；
-      # newcopy：表示生成文件副本并进行重命名，命名规则为“文件名_日期.后缀”。
-      def upload_file_url(params={})
-        default = {method: "upload", ondup: "newcopy"}
-        params  = params.merge(default)
-        "https://c.pcs.baidu.com/rest/2.0/pcs/file?#{query_params(params)}"
-      end
-
-      def user_base_url(path, params={})
-        "https://openapi.baidu.com/rest/2.0/passport/users/#{path}?#{query_params(params)}"
-      end
 
       def query_params(params)
         params.merge({access_token: token}).to_query
@@ -206,10 +131,5 @@ You can store #access_token.token in you database or local file, when you restar
       def get_response_json(api_url)
         JSON.parse(access_token.get(api_url).body)
       end
-
-      def post_json(api_url)
-        "pending"
-      end
-
   end
 end

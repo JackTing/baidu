@@ -1,7 +1,7 @@
 require "active_support/core_ext/object/to_query"
-require 'active_support/core_ext/object/blank'
+require 'active_support/concern'
 
-%w(version client).each do |fname|
+%w(api/pcs api/user version client).each do |fname|
   require File.expand_path("../baidu/#{fname}", __FILE__)
 end
 

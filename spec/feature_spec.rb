@@ -6,7 +6,7 @@ describe "Bidu" do
       url = $client.authorize_url
       puts "="*20
       puts "Please open and login: #{url}"
-      print "Code:"
+      print "Authorize Code:"
       auth_code = $stdin.gets.chomp.split("\n").first
       $client.token!(auth_code)
       puts "access_token = %s" % $client.access_token.token
@@ -44,19 +44,3 @@ describe "Bidu" do
 
   end
 end
-
-# "path" : "/apps/album/1.jpg",
-# 　    "size" : 372121,
-# 　    "ctime" : 1234567890,
-# 　    "mtime" : 1234567890,
-# 　    "md5" : "cb123afcc12453543ef",
-# 　    "fs_id" : 12345,
-#     　"request_id":4043312669
-
-
-# URL：https://pcs.baidu.com/rest/2.0/pcs/file?method=upload&path=%2Fapps%2F%E6%B5%8B%E8%AF%95%E5%BA%94%E7%94%A8%2F&access_token=3.dc0c86661a0c7dce04bbcfcef1ec09a0.2592000.1381770240.1863251187-248414
-
-# https://pcs.baidu.com/rest/2.0/pcs/file?access_token=3.66c84d85120868c1cbe4ba41ec7b32df.2592000.1381818039.1863251187-1340991&method=upload&ondup=newcopy&path=%2Fapps%2Fimages%2Ftest.jpg
-
-# https://c.pcs.baidu.com/rest/2.0/pcs/file?access_token=3.4a6c9c801ec5d0b89c6a041e91efdfbc.2592000.1381817602.1863251187-1340991&method=upload&ondup=newcopy&url=app%2Fimages%2Ftest.jpg
-
