@@ -12,7 +12,7 @@ module Baidu
     attr_accessor :access_token
 
     def initialize(&block)
-      instance_eval &block
+      instance_eval(&block)
     end
 
     ##
@@ -171,16 +171,28 @@ You can store #access_token.token in you database or local file, when you restar
       get_response_json(quota_url)
     end
 
-    # TODO: add PCS apis
-    def upload_single_file
-      upload_single_file_url = "#{pcs_base_url('file')}"
-      post_json(upload_single_file_url)
+    # 上传单个文件。
+    # 百度PCS服务目前支持最大2G的单个文件上传。
+    # 如需支持超大文件（>2G）的断点续传，请参考下面的“分片文件上传”方法。
+    def upload_single_file(yun_path, source_file_path="", opts={})
+      require 'rest-client'
+      source_file = File.open(source_file_path)
+      response    = RestClient.post(upload_file_url(path: yun_path), file: source_file)
+      JSON.parse(response)
     end
 
     private
 
       def pcs_base_url(path, params={})
         "https://pcs.baidu.com/rest/2.0/pcs/#{path}?#{query_params(params)}"
+      end
+
+      # overwrite：表示覆盖同名文件；
+      # newcopy：表示生成文件副本并进行重命名，命名规则为“文件名_日期.后缀”。
+      def upload_file_url(params={})
+        default = {method: "upload", ondup: "newcopy"}
+        params  = params.merge(default)
+        "https://c.pcs.baidu.com/rest/2.0/pcs/file?#{query_params(params)}"
       end
 
       def user_base_url(path, params={})
