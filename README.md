@@ -55,11 +55,11 @@ $client.get_loggedin_user
 
 ## TODO
 
-# 逐步完善所有API对接
+1. 逐步完善所有API对接
 
-# 重构oauth2，分离出独立的gem实现
+2. 重构oauth2，分离出独立的gem实现
 
-# 添加Terminal命令控制
+3. 添加Terminal命令控制
 
 ## Contributing
 
