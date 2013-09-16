@@ -23,6 +23,16 @@ module Baidu
         JSON.parse(response)
       end
 
+      # 下载单个文件。
+      # Download接口支持HTTP协议标准range定义，通过指定range的取值可以实现断点下载功能。 例如：
+      # 如果在request消息中指定“Range:bytes=099”，那么响应消息中会返回该文件的前100个字节的内容；继续指定“Range: bytes=100-199”，那么响应消息中会返回该文件的第二个100字节内容。
+
+      # 注意: 此API不直接下载文件，而是直接返回下载链接
+      def download_single_file(file_path)
+        default = {method: "download", path: file_path}
+        "https://d.pcs.baidu.com/rest/2.0/pcs/file?#{query_params(default)}"
+      end
+
       private
         def pcs_base_url(path, params={})
           "https://pcs.baidu.com/rest/2.0/pcs/#{path}?#{query_params(params)}"

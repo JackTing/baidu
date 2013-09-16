@@ -37,10 +37,18 @@ describe "Bidu" do
 
       it "should upload a image file to baidu yun" do
         @source_path = File.expand_path("../fixtures/avater.jpg", __FILE__)
-        result_json = $client.upload_single_file("/apps/backup_baidu/avater.jpg", @source_path)
+        result_json  = $client.upload_single_file("/apps/backup_baidu/avater.jpg", @source_path)
         result_json.keys.should =~ ["path", "size", "ctime", "mtime", "md5", "fs_id", "request_id"]
       end
-    end
 
+      it "should download a image named avater.jpg" do
+        download_url = $client.download_single_file("/apps/backup_baidu/avater.jpg")
+        response = $client.access_token.get(download_url)
+
+        response.status.should == 200
+        puts response.headers["content-type"].should == "image/jpeg"
+      end
+
+    end
   end
 end
