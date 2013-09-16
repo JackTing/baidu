@@ -1,5 +1,6 @@
 require 'oauth2'
 require "json"
+require 'rest-client'
 
 module Baidu
   class Client

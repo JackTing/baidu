@@ -17,7 +17,6 @@ module Baidu
       # 百度PCS服务目前支持最大2G的单个文件上传。
       # 如需支持超大文件（>2G）的断点续传，请参考下面的“分片文件上传”方法。
       def upload_single_file(yun_path, source_file_path="", opts={})
-        require 'rest-client'
         source_file = File.open(source_file_path)
         response    = RestClient.post(upload_file_url(path: yun_path), file: source_file)
         JSON.parse(response)
@@ -31,6 +30,35 @@ module Baidu
       def download_single_file(file_path)
         default = {method: "download", path: file_path}
         "https://d.pcs.baidu.com/rest/2.0/pcs/file?#{query_params(default)}"
+      end
+
+      # FIXME: 403, 凡是跟目录有关的操作都有问题
+      # 创建目录
+      # 为当前用户创建一个目录。
+      # def create_directory(dir_path)
+      #   default = {method: "mkdir"}
+      #   create_dir_url = pcs_base_url("file", default)
+      #   response    = RestClient.post(create_dir_url, path: dir_path)
+      #    # response= RestClient.post(
+      #    #  create_dir_url,
+      #    #  {path: dir_path},
+      #    #  content_type: "application/x-www-form-urlencoded",
+      #    #  accept: :json)
+      #   JSON.parse(response)
+      # end
+
+      def get_single_meta(path)
+        default  = {method: "meta", path: path}
+        meta_url = pcs_base_url("file", default)
+        get_response_json(meta_url)
+      end
+
+      # 删除单个文件/目录。
+      def delete_single_file(path)
+        default        = {method: "delete"}
+        create_dir_url = pcs_base_url("file", default)
+        response       = RestClient.post(create_dir_url, path: path)
+        JSON.parse(response)
       end
 
       private
