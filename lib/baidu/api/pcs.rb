@@ -32,26 +32,31 @@ module Baidu
         "https://d.pcs.baidu.com/rest/2.0/pcs/file?#{query_params(default)}"
       end
 
-      # FIXME: 403, 凡是跟目录有关的操作都有问题
       # 创建目录
       # 为当前用户创建一个目录。
-      # def create_directory(dir_path)
-      #   default = {method: "mkdir"}
-      #   create_dir_url = pcs_base_url("file", default)
-      #   response    = RestClient.post(create_dir_url, path: dir_path)
-      #    # response= RestClient.post(
-      #    #  create_dir_url,
-      #    #  {path: dir_path},
-      #    #  content_type: "application/x-www-form-urlencoded",
-      #    #  accept: :json)
-      #   JSON.parse(response)
-      # end
+      # 注意:这个是您使用的路径不正确，这个路径需要是您开启PCS权限的时候，填写的文件夹名称，而不能随便填写
+      def create_directory(dir_path)
+        default = {method: "mkdir"}
+        create_dir_url = pcs_base_url("file", default)
+        response       = RestClient.post(create_dir_url, path: dir_path)
+        JSON.parse(response)
+      end
 
+      # 获取单个文件/目录的元信息
       def get_single_meta(path)
         default  = {method: "meta", path: path}
         meta_url = pcs_base_url("file", default)
         get_response_json(meta_url)
       end
+
+      # 批量获取文件/目录的元信息
+      # list value should be a json
+      # {"list":[{"path":"\/apps\/album\/a\/b\/c"},{"path":"\/apps\/album\/a\/b\/d"}]}
+      # def get_batch_metas(*paths)
+      #   path_list ={"list": paths}
+      #   default  = {method: "meta", param: paths}
+      #   batch_metas_url = pcs_base_url("file", default)
+      # end
 
       # 删除单个文件/目录。
       def delete_single_file(path)
@@ -59,6 +64,13 @@ module Baidu
         create_dir_url = pcs_base_url("file", default)
         response       = RestClient.post(create_dir_url, path: path)
         JSON.parse(response)
+      end
+
+      # 获取指定图片文件的缩略图。
+      def get_image_thumbnail(image_path, height, width ,quality="100")
+        default = {method: "generate", path: image_path,
+                   width: width, height: height, quality: quality}
+        pcs_base_url("thumbnail", default)
       end
 
       private

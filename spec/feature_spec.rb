@@ -1,5 +1,6 @@
 require "spec_helper"
 
+# if you want to run test, please instead 'backup_baidu' with you application name
 describe "Bidu" do
   describe "Feature" do
     before :all do
@@ -10,6 +11,10 @@ describe "Bidu" do
       auth_code = $stdin.gets.chomp.split("\n").first
       $client.token!(auth_code)
       puts "access_token = %s" % $client.access_token.token
+
+      @application_name = "backup_baidu"
+      @app_dir = "/apps/#{@application_name}"
+      @new_dir_path = "#{@app_dir}/gem_test_#{Time.now.to_i}"
     end
 
     describe "#User personal info" do
@@ -37,47 +42,54 @@ describe "Bidu" do
 
       it "should upload a image file to baidu yun" do
         @source_path = File.expand_path("../fixtures/avater.jpg", __FILE__)
-        result_json  = $client.upload_single_file("/apps/backup_baidu/avater.jpg", @source_path)
+        result_json  = $client.upload_single_file("#{@app_dir}/avater.jpg", @source_path)
         result_json.keys.should =~ ["path", "size", "ctime", "mtime", "md5", "fs_id", "request_id"]
       end
 
       it "should download a image named avater.jpg" do
-        download_url = $client.download_single_file("/apps/backup_baidu/avater.jpg")
+        download_url = $client.download_single_file("#{@app_dir}/avater.jpg")
         response     = $client.access_token.get(download_url)
 
         response.status.should == 200
-        puts response.headers["content-type"].should == "image/jpeg"
+        response.headers["content-type"].should == "image/jpeg"
       end
 
-      # it "should create a '/apps/gem_test' directory" do
-      #   response = $client.create_directory("/apps/sss/")
-      #   puts response
-      # end
+      it "should create a directory" do
+        response = $client.create_directory(@new_dir_path)
+        response.keys.should =~ ["request_id", "ctime", "fs_id", "mtime", "path"]
+      end
+
+      it "should delete a dir" do
+        response = $client.delete_single_file(@new_dir_path)
+        response.keys.should =~ ["request_id"]
+      end
 
       it "should get a image named avater.jpg meta" do
-        response = $client.get_single_meta("/apps/backup_baidu/avater.jpg")
+        response = $client.get_single_meta("#{@app_dir}/avater.jpg")
         response.keys.should               =~ ["list", "request_id"]
         response["list"].first.keys.should =~ ["block_list", "ctime", "filenum", "fs_id",
                                                "ifhassubdir", "isdir", "mtime", "path", "size"]
-        puts response["list"].first["path"].should == "/apps/backup_baidu/avater.jpg"
+        response["list"].first["path"].should == "#{@app_dir}/avater.jpg"
         response["list"].first["isdir"].should     == 0
       end
 
       it "should get a dir meta" do
-        response = $client.get_single_meta("/apps/backup_baidu")
+        response = $client.get_single_meta(@app_dir)
         response.keys.should =~ ["list", "request_id"]
-        response["list"].first["path"].should  == "/apps/backup_baidu"
+        response["list"].first["path"].should  == @app_dir
         response["list"].first["isdir"].should == 1
       end
 
-      # it "should delete a fiel" do
-      #   response = $client.delete_single_file("/apps/backup_baidu/avater.jpg")
-      #   response.keys.should =~ ["request_id"]
-      # end
+      it "should get a thumbnail image" do
+        thumbnail_url = $client.get_image_thumbnail("#{@app_dir}/avater.jpg", 50, 50)
+        response      = $client.access_token.get(thumbnail_url)
+        response.status.should == 200
+        response.headers["content-type"].should == "image/jpeg"
+      end
 
-      it "should delete a dir" do
-        response = $client.delete_single_file("/apps/test_delete")
-        puts response
+      it "should delete a file" do
+        response = $client.delete_single_file("#{@app_dir}/avater.jpg")
+        response.keys.should =~ ["request_id"]
       end
 
     end
