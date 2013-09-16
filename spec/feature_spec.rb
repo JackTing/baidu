@@ -32,6 +32,19 @@ describe "Bidu" do
         result_json = $client.get_user_info
         result_json.keys.should =~ ["userid", "username", "birthday", "marriage", "sex", "blood", "constellation", "figure", "trade", "job", "portrait", "education"]
       end
+
+      it "should get friends" do
+        result_json = $client.get_friends
+        result_json.first.keys.should =~ ["uid", "uname", "portrait"]
+      end
+
+      it "should return some friends relations" do
+        uids1 = "2718323483,402818250,2819457800"
+        uids2 = "1527552252,3289658540,1694714450"
+        result_json = $client.areFriends(uids1, uids2)
+        result_json.size.should == 3
+      end
+
     end
 
     describe "#User netdisk" do
@@ -93,5 +106,23 @@ describe "Bidu" do
       end
 
     end
+
+    describe "#Tool" do
+      it "query with your ip " do
+        ip = "163.179.238.216"
+        result_json = $client.query_with_ip(ip)
+        result_json[ip]["province"].should == "广东"
+        result_json[ip]["city"].should     == "惠州"
+      end
+    end
+
+    describe "#Translate" do
+      it "should translate 'Today' to '今天'" do
+        result_json = $client.translate("en", "zh", "Today")
+        result_json["trans_result"][0]["src"].should == "Today"
+        result_json["trans_result"][0]["dst"].should == "今天"
+      end
+    end
+
   end
 end

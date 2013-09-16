@@ -7,6 +7,8 @@ module Baidu
 
     include Pcs
     include User
+    include Tool
+    include Translation
 
     attr_accessor :api_key, :api_secret
     ##
