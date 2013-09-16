@@ -69,8 +69,8 @@ describe "Bidu" do
         response.keys.should               =~ ["list", "request_id"]
         response["list"].first.keys.should =~ ["block_list", "ctime", "filenum", "fs_id",
                                                "ifhassubdir", "isdir", "mtime", "path", "size"]
-        response["list"].first["path"].should == "#{@app_dir}/avater.jpg"
-        response["list"].first["isdir"].should     == 0
+        response["list"].first["path"].should  == "#{@app_dir}/avater.jpg"
+        response["list"].first["isdir"].should == 0
       end
 
       it "should get a dir meta" do
@@ -95,14 +95,3 @@ describe "Bidu" do
     end
   end
 end
-
-
-# "list" : [ { "fs_id" : 3528850315,
-#         "path" : "/apps/yunform/music/hello",
-#         "ctime" : 1331184269,
-#         "mtime" : 1331184269,
-#         "block_list":["59ca0efa9f5633cb0371bbc0355478d8"],
-#         "size" : 13,
-#         "isdir" : 1
-#                  } ],
-#         "request_id" : 4043312678
