@@ -36,6 +36,7 @@ module Baidu
       end
 
       # refactor
+      # 判断用户是否为应用用户
       def is_app_user(uid="")
         app_user_url = "#{user_base_url('passport/users/isAppUser', uid: uid)}"
         get_response_json(app_user_url)
