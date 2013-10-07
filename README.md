@@ -9,7 +9,7 @@
 
 Add this line to your application's Gemfile:
 
-    gem "api4baidu"
+    gem "api4baidu", require: "baidu"
 
 And then execute:
 
