@@ -99,7 +99,7 @@ describe "Bidu" do
       end
 
       it "should get a dir meta" do
-        response = $client.get_single_meta(@app_dir)
+        response = $client.get_meta(@app_dir)
         response.keys.should =~ ["list", "request_id"]
         response["list"].first["path"].should  == @app_dir
         response["list"].first["isdir"].should == 1
@@ -113,7 +113,7 @@ describe "Bidu" do
       end
 
       it "should delete a file" do
-        response = $client.delete_single_file("#{@app_dir}/avater.jpg")
+        response = $client.delete("#{@app_dir}/avater.jpg")
         response.keys.should =~ ["request_id"]
       end
 

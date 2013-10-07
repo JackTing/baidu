@@ -1,7 +1,7 @@
 require "rspec"
-require "baidu"
+require "api4baidu"
 
 $client = Baidu.configure do |config|
-  config.api_key    = "ecrX8BsAoe21WGLX5f62QQyG"
-  config.api_secret = "FzNghIyiPuQhHPoZfNK7Od8YlzgMDmv4"
+  config.api_key    = "lZUsGbfnXOkwa2tvtZVI1Sn7"
+  config.api_secret = "qjhCau3p8EIPmZKAHyEArKn19H74FtEj"
 end
