@@ -1,6 +1,5 @@
 require "spec_helper"
 
-# if you want to run test, please instead 'backup_baidu' with you application name
 describe "Bidu" do
   describe "Feature" do
     before :all do
@@ -12,9 +11,22 @@ describe "Bidu" do
       $client.token!(auth_code)
       puts "access_token = %s" % $client.access_token.token
 
-      @application_name = "backup_baidu"
+      # the name 'backup_api' is defined when you opened you 'PCS API' to 'open' state
+      # so please instead of your's
+      @application_name = "backup_api"
       @app_dir = "/apps/#{@application_name}"
       @new_dir_path = "#{@app_dir}/gem_test_#{Time.now.to_i}"
+    end
+
+    describe "#Token" do
+
+      it "should refresh token" do
+        puts $client.access_token.token
+        puts refresh_token = $client.access_token.refresh_token
+        puts $client.refresh_token!("#{refresh_token}ss")
+        puts $client.access_token.token
+
+      end
     end
 
     describe "#User personal info" do
