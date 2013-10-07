@@ -43,7 +43,7 @@ module Baidu
       end
 
       # 获取单个文件/目录的元信息
-      def get_single_meta(path)
+      def get_meta(path)
         default  = {method: "meta", path: path}
         meta_url = pcs_base_url("file", default)
         get_response_json(meta_url)
@@ -59,7 +59,7 @@ module Baidu
       # end
 
       # 删除单个文件/目录。
-      def delete_single_file(path)
+      def delete(path)
         default        = {method: "delete"}
         create_dir_url = pcs_base_url("file", default)
         response       = RestClient.post(create_dir_url, path: path)

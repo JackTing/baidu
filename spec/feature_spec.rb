@@ -85,12 +85,12 @@ describe "Bidu" do
       end
 
       it "should delete a dir" do
-        response = $client.delete_single_file(@new_dir_path)
+        response = $client.delete(@new_dir_path)
         response.keys.should =~ ["request_id"]
       end
 
       it "should get a image named avater.jpg meta" do
-        response = $client.get_single_meta("#{@app_dir}/avater.jpg")
+        response = $client.get_meta("#{@app_dir}/avater.jpg")
         response.keys.should               =~ ["list", "request_id"]
         response["list"].first.keys.should =~ ["block_list", "ctime", "filenum", "fs_id",
                                                "ifhassubdir", "isdir", "mtime", "path", "size"]
