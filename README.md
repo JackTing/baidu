@@ -51,6 +51,23 @@ $client.get_loggedin_user
 
 ```
 
+### For controller
+
+```ruby
+
+class SessionController
+  def oauth
+    redirect_to $baidu.authorize_url(redirect_uri: "you redirect url")
+  end
+
+  def callback
+    auth_code = params[:code]
+    $baidu.token!(auth_code)
+  end
+end
+
+```
+
 更多使用例子请查看 `spec`目录
 
 ## 已完成API列表
