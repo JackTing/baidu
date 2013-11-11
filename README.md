@@ -110,6 +110,18 @@ end
 
 1. 查询IP地址所在地区: query_with_ip
 
+
+## Doing
+
+1. BCS: http://developer.baidu.com/cloud/stor
+
+2. 云消息: http://developer.baidu.com/cloud/mq
+
+3. 云推送: http://developer.baidu.com/cloud/push
+
+4. 媒体云: http://developer.baidu.com/cloud/media
+
+
 ## TODO
 
 1. 逐步完善所有API对接

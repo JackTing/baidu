@@ -1,3 +1,4 @@
+# http://developer.baidu.com/wiki/index.php?title=docs/cplat/stor/api#Put_Bucket
 module Baidu
   module Bcs
     extend ActiveSupport::Concern
