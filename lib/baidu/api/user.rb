@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Baidu
   module User
     extend ActiveSupport::Concern

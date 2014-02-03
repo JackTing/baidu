@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'oauth2'
 require "json"
 require 'rest-client'

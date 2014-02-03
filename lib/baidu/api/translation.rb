@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Baidu
   module Translation
     extend ActiveSupport::Concern
